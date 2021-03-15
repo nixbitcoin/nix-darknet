@@ -1,0 +1,7 @@
+i2pd_port=$(( ((RANDOM<<15)|RANDOM) % 49152 + 10000 ))
+torbridge_port=$(( ((RANDOM<<15)|RANDOM) % 49152 + 10000 ))
+obfsproxy_port=$(( ((RANDOM<<15)|RANDOM) % 49152 + 10000 ))
+
+echo "Use $i2pd_port for services.i2pd.port"
+echo "Use $torbridge_port for services.tor-bridge.port"
+echo "Use $obfsproxy_port for services.tor-bridge.obfsproxy-port"
