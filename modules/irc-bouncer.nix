@@ -69,7 +69,7 @@ in {
       services.znc.config.User.${cfg.username} = {
         Network.irc2p = {
           Server = "127.0.0.1 6668";
-          LoadModule = [ "simple_away" "nickserv" ];
+          LoadModule = [ "simple_away" "nickserv" "keepnick" ];
           Chan = {
             "#i2p" = { };
           };
@@ -92,7 +92,7 @@ in {
       services.znc.config.User.${cfg.username} = {
         Network.anarplex = {
           Server = "127.0.0.1 6669";
-          LoadModule = [ "simple_away" "nickserv" ];
+          LoadModule = [ "simple_away" "nickserv" "keepnick" ];
           Chan = {
             "#agora" = { };
           };
@@ -115,7 +115,7 @@ in {
       services.znc.config.User.${cfg.username} = {
         Network.freenode = {
           Server = "127.0.0.1 +4322";
-          LoadModule = [ "simple_away" "cert" "sasl" ];
+          LoadModule = [ "simple_away" "cert" "sasl" "keepnick" ];
           Chan = {
             "#nix-bitcoin" = { };
           };
