@@ -46,6 +46,7 @@ in {
         useLegacyConfig = false;
         openFirewall = true;
         dataDir = "/var/lib/znc";
+        mutable = false;
         config = {
           LoadModule = [ "webadmin" ];
           User.${cfg.username} = {
