@@ -25,9 +25,10 @@
   # proxy and POP3/SMTP out tunnels. Default bandwidth limit set to 150 KBps
   # with a share ratio of 80%.
   # services.i2p-router.enable = true;
-  # Enter the port you wish to use for your i2p router here.
-  # Open this external ports on your network firewall.
+  # Enter the ports you wish to use for your i2p router here.
+  # Open these external ports on your network firewall.
   # services.i2pd.port = <random port, use ../helper/random_ports>;
+  # services.i2pd.ntcp2.port = <random port, use ../helper/random_ports>;
 
   ### TOR-BRIDGE
   # Enable this module to set up a Tor bridge relay.

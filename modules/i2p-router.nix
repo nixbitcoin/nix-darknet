@@ -18,6 +18,7 @@ in {
     networking.firewall = {
       allowedTCPPorts = [
         config.services.i2pd.port
+        config.services.i2pd.ntcp2.port
       ];
       allowedUDPPorts = [ config.services.i2pd.port ];
     };
@@ -25,6 +26,10 @@ in {
     services.i2pd = {
       enable = true;
       bandwidth = 150;
+      ntcp2 = {
+        enable = true;
+        published = true;
+      };
       share = 80;
       proto = {
         http.enable = true;
