@@ -8,6 +8,7 @@ with lib;
     ./i2p-router.nix
     ./tor-bridge.nix
     ./irc-bouncer.nix
+    ./XD.nix
 
     ./networking.nix
     ./forward.nix

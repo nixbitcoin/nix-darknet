@@ -67,6 +67,12 @@
   # Configure password with nickserv https://wiki.znc.in/Nickserv
   # services.irc-bouncer.anarplex = true;
 
+  ## XD
+  # Enable this option to use XD i2p bittorrent client.
+  # You can control it with XD-CLI.
+  # webui is disabled.
+  # services.XD.enable = true;
+
   # FIXME: Define your hostname.
   networking.hostName = "nix-darknet";
   time.timeZone = "UTC";
