@@ -37,6 +37,7 @@ in {
           enable = true;
           keys = null;
         };
+        sam.enable = true;
       };
       outTunnels = {
         POP3 = {
