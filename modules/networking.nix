@@ -2,7 +2,7 @@
 
 let
   cfg = config.services;
-  nbLib = config.nix-darknet.lib;
+  ndLib = config.nix-darknet.lib;
 
 in {
   config =  {
@@ -14,6 +14,6 @@ in {
       ];
     };
 
-    services.tor.hiddenServices.sshd = nbLib.mkHiddenService { port = 22; };
+    services.tor.hiddenServices.sshd = ndLib.mkHiddenService { port = 22; };
   };
 }

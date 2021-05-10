@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.services.i2p-router;
-  nbLib = config.nix-darknet.lib;
 
 in {
   options.services.i2p-router = {

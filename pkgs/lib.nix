@@ -15,6 +15,11 @@ let self = {
       MemoryDenyWriteExecute = "true";
       ProtectKernelTunables = "true";
       ProtectKernelModules = "true";
+      ProtectKernelLogs = "true";
+      ProtectClock = "true";
+      # Test and enable these when systemd v247 is available
+      # ProtectProc = "invisible";
+      # ProcSubset = "pid";
       ProtectControlGroups = "true";
       RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
       RestrictNamespaces = "true";
@@ -33,13 +38,20 @@ let self = {
       SystemCallArchitectures = "native";
   };
 
-  # Allow tor traffic. Allow takes precedence over Deny.
-  allowTor = {
+  allowNetlink = {
+    RestrictAddressFamilies = self.defaultHardening.RestrictAddressFamilies + " AF_NETLINK";
+  };
+
+  # Allow takes precedence over Deny.
+  allowLocalIPAddresses = {
     IPAddressAllow = "127.0.0.1/32 ::1/128 169.254.0.0/16";
   };
-  # Allow any traffic
-  allowAnyIP = { IPAddressAllow = "any"; };
-  allowAnyProtocol = { RestrictAddressFamilies = "~"; };
+  allowAllIPAddresses = { IPAddressAllow = "any"; };
+  allowTor = self.allowLocalIPAddresses;
+  allowedIPAddresses = onlyLocal:
+    if onlyLocal
+    then self.allowLocalIPAddresses
+    else self.allowAllIPAddresses;
 
   enforceTor = mkOption {
     type = types.bool;

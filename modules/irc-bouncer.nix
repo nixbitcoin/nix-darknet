@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.services.irc-bouncer;
-  nbLib = config.nix-darknet.lib;
 
 in {
   options.services.irc-bouncer = {
