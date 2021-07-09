@@ -32,20 +32,21 @@ in {
   config = mkIf cfg.enable {
     networking.firewall = {
       allowedTCPPorts = [
-        config.services.tor.relay.port
+        config.services.tor-bridge.port
         config.services.tor-bridge.obfsproxy-port
       ];
     };
 
     services.tor = {
       enable = true;
+      settings = {
+        ORPort = cfg.port;
+        ServerTransportListenAddr = "obfs4 0.0.0.0:${toString cfg.obfsproxy-port}";
+      };
       package = config.nix-darknet.pkgs.tor;
-      extraConfig = "ServerTransportListenAddr obfs4 0.0.0.0:${toString cfg.obfsproxy-port}";
       relay = {
         enable = true;
         role = "bridge";
-        port = cfg.port;
-        bridgeTransports = [ "obfs4" ];
       };
     };
   };

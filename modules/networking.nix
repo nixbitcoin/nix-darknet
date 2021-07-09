@@ -14,6 +14,6 @@ in {
       ];
     };
 
-    services.tor.hiddenServices.sshd = ndLib.mkHiddenService { port = 22; };
+    services.tor.relay.onionServices.sshd = ndLib.mkOnionService { port = 22; };
   };
 }

@@ -70,7 +70,7 @@ let self = {
   # Used for ExecStart*
   privileged = name: src: "+${self.script name src}";
 
-  mkHiddenService = map: {
+  mkOnionService = map: {
     map = [ map ];
     version = 3;
   };

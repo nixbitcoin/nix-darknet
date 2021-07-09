@@ -65,6 +65,7 @@ in {
     };
 
     users.users.${cfg.user} = {
+      isSystemUser = true;
       group = cfg.group;
     };
     users.groups.${cfg.group} = {};
