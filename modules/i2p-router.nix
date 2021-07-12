@@ -26,6 +26,7 @@ in {
     services.i2pd = {
       enable = true;
       bandwidth = 150;
+      limits.transittunnels = 500;
       ntcp2 = {
         enable = true;
         published = true;
