@@ -40,7 +40,12 @@ in {
     services.tor = {
       enable = true;
       settings = {
-        ORPort = cfg.port;
+        ORPort = [
+          {
+            port = cfg.port;
+            flags = [ "IPv4Only" ];
+          }
+        ];
         ServerTransportListenAddr = "obfs4 0.0.0.0:${toString cfg.obfsproxy-port}";
       };
       package = config.nix-darknet.pkgs.tor;
