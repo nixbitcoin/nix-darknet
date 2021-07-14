@@ -47,6 +47,7 @@ in {
           }
         ];
         ServerTransportListenAddr = "obfs4 0.0.0.0:${toString cfg.obfsproxy-port}";
+        BridgeRecordUsageByCountry = true;
       };
       package = config.nix-darknet.pkgs.tor;
       relay = {
