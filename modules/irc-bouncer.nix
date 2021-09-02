@@ -86,7 +86,7 @@ in {
 
       services.znc.config.User.${cfg.username} = {
         Network.anarplex = {
-          Server = "127.0.0.1 6669";
+          Server = "127.0.0.1 4322";
           LoadModule = [ "simple_away" "nickserv" "keepnick" ];
           Chan = {
             "#agora" = { };
@@ -94,13 +94,18 @@ in {
         };
       };
 
-      services.i2pd.outTunnels = {
-        ANARPLEX-IRC = {
-          enable = true;
-          port = 6669;
-          destination = "eplpiyfwgnq74wbfveughu2l2kdzvcriaovjjbgn5zwe7pgmtyzq.b32.i2p";
-          destinationPort = 6667;
-          keys = "";
+      # socat tunnel to connect znc to tor
+      # https://wiki.znc.in/Tor
+      systemd.services.anarplex-socat = {
+        bindsTo = [ "znc.service" ];
+        wantedBy = [ "znc.service" ];
+        before = [ "znc.service" ];
+        script = ''
+          ${pkgs.socat}/bin/socat TCP4-LISTEN:4322,fork SOCKS4A:localhost:vxecvd6lc4giwtasjhgbrr3eop6pzq6i5rveracktioneunalgqlwfad.onion:6667,socksport=9050
+        '';
+        serviceConfig = {
+          User = "znc";
+          Group = "znc";
         };
       };
     })
