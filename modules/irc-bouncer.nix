@@ -20,11 +20,6 @@ in {
       type = types.str;
       description = "Password Salt from `znc --makepass`";
     };
-    freenode = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether to enable freenode IRC over Tor.";
-    };
     irc2p = mkOption {
       type = types.bool;
       default = false;
@@ -106,50 +101,6 @@ in {
           destination = "eplpiyfwgnq74wbfveughu2l2kdzvcriaovjjbgn5zwe7pgmtyzq.b32.i2p";
           destinationPort = 6667;
           keys = "";
-        };
-      };
-    })
-    (mkIf cfg.freenode {
-      services.tor.client.enable = true;
-
-      services.znc.config.User.${cfg.username} = {
-        Network.freenode = {
-          Server = "127.0.0.1 +4322";
-          LoadModule = [ "simple_away" "cert" "sasl" "keepnick" ];
-          Chan = {
-            "#nix-bitcoin" = { };
-          };
-          extraConfig = ''
-            TrustAllCerts = true
-          '';
-        };
-      };
-
-      # copy user client certificate from /var/src/secrets/user.pem to ZNC
-      # moddata directory
-      systemd.services.znc.serviceConfig = {
-        IPAddressAllow = "127.0.0.1/32 ::1/128";
-        IPAddressDeny = "any";
-        ExecStartPost = "+${pkgs.writers.writeBash "script" ''
-          set -eo pipefail
-          cp /var/src/secrets/user.pem ${config.services.znc.dataDir}/users/${cfg.username}/networks/freenode/moddata/cert/user.pem
-          chown znc: ${config.services.znc.dataDir}/users/${cfg.username}/networks/freenode/moddata/cert/user.pem
-          chmod 700 ${config.services.znc.dataDir}/users/${cfg.username}/networks/freenode/moddata/cert/user.pem
-        ''}";
-      };
-
-      # socat tunnel to connect znc to tor
-      # https://wiki.znc.in/Tor
-      systemd.services.freenode-socat = {
-        bindsTo = [ "znc.service" ];
-        wantedBy = [ "znc.service" ];
-        before = [ "znc.service" ];
-        script = ''
-          ${pkgs.socat}/bin/socat TCP4-LISTEN:4322,fork SOCKS4A:localhost:ajnvpgl6prmkb7yktvue6im5wiedlz2w32uhcwaamdiecdrfpwwgnlqd.onion:6697,socksport=9050
-        '';
-        serviceConfig = {
-          User = "znc";
-          Group = "znc";
         };
       };
     })
