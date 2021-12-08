@@ -52,6 +52,12 @@
   # services.irc-bouncer.password-salt = "<Salt from `znc --makepass`>";
 
   ## IRC-NETWORKS
+  # Enable this option to automatically connect to the libera.chat IRC
+  # network with your username. (Tor)
+  # Place user.pem in <deployment dir>/secrets
+  # See https://libera.chat/guides/certfp.html on how to generate and add
+  # your client certificate (user.pem).
+  # services.irc-bouncer.liberachat = true;
   # Enable this option to automatically connect to the irc2p IRC network
   # with your username. (I2P)
   # Configure password with nickserv https://wiki.znc.in/Nickserv

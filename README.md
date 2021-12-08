@@ -14,7 +14,7 @@ NixOS modules
 * Application services
   * [i2p router](https://geti2p.net/en/about/glossary): i2p network router using i2pd
   * [Tor bridge](https://support.torproject.org/censorship/censorship-7/): Tor bridge relay to help users with censored internet connections
-  * [IRC bouncer](https://wiki.znc.in/ZNC): supports [freenode](https://freenode.net/), [irc2p](https://geti2p.net/en/docs/applications/irc), and [anarplex](https://anarplex.net/) darknet IRC networks
+  * [IRC bouncer](https://wiki.znc.in/ZNC): supports [libera.chat](https://libera.chat/), [irc2p](https://geti2p.net/en/docs/applications/irc), and [anarplex](https://anarplex.net/) darknet IRC networks
 
 Notes
 ---

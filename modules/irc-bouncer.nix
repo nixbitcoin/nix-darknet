@@ -20,6 +20,11 @@ in {
       type = types.str;
       description = "Password Salt from `znc --makepass`";
     };
+    liberachat = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to enable liberachat IRC over Tor.";
+    };
     irc2p = mkOption {
       type = types.bool;
       default = false;
@@ -86,7 +91,7 @@ in {
 
       services.znc.config.User.${cfg.username} = {
         Network.anarplex = {
-          Server = "127.0.0.1 4322";
+          Server = "127.0.0.1 4321";
           LoadModule = [ "simple_away" "nickserv" "keepnick" ];
           Chan = {
             "#agora" = { };
@@ -101,7 +106,53 @@ in {
         wantedBy = [ "znc.service" ];
         before = [ "znc.service" ];
         script = ''
-          ${pkgs.socat}/bin/socat TCP4-LISTEN:4322,fork SOCKS4A:localhost:vxecvd6lc4giwtasjhgbrr3eop6pzq6i5rveracktioneunalgqlwfad.onion:6667,socksport=9050
+          ${pkgs.socat}/bin/socat TCP4-LISTEN:4321,fork SOCKS4A:localhost:vxecvd6lc4giwtasjhgbrr3eop6pzq6i5rveracktioneunalgqlwfad.onion:6667,socksport=9050
+        '';
+        serviceConfig = {
+          User = "znc";
+          Group = "znc";
+        };
+      };
+    })
+    (mkIf cfg.liberachat {
+      services.tor.client.enable = true;
+      services.tor.settings.MapAddress = ''
+        palladium.libera.chat libera75jm6of4wxpxt4aynol3xjmbtxgfyjpu34ss4d7r7q2v5zrpyd.onion
+      '';
+
+      services.znc.config.User.${cfg.username} = {
+        Network.liberachat = {
+          Server = "127.0.0.1 +4322";
+          LoadModule = [ "simple_away" "cert" "sasl" "keepnick" ];
+          Chan = {
+            "#nix-bitcoin" = { };
+          };
+          extraConfig = ''
+            TrustAllCerts = true
+          '';
+        };
+      };
+
+      # copy user client certificate from /var/src/secrets/user.pem to ZNC
+      # moddata directory
+      systemd.services.znc.serviceConfig = {
+        IPAddressAllow = "127.0.0.1/32 ::1/128";
+        IPAddressDeny = "any";
+        ExecStartPost = "+${pkgs.writers.writeBash "script" ''
+          set -eo pipefail
+          mkdir -p -m 700 {config.services.znc.dataDir}/users/${cfg.username}/networks/liberachat/moddata/cert/
+          cp /var/src/secrets/user.pem ${config.services.znc.dataDir}/users/${cfg.username}/networks/liberachat/moddata/cert/user.pem
+          chown -R znc: ${config.services.znc.dataDir}/users/${cfg.username}/networks/liberachat/
+          chmod -R 700 ${config.services.znc.dataDir}/users/${cfg.username}/networks/liberachat/
+        ''}";
+      };
+
+      systemd.services.liberachat-socat = {
+        bindsTo = [ "znc.service" ];
+        wantedBy = [ "znc.service" ];
+        before = [ "znc.service" ];
+        script = ''
+          ${pkgs.socat}/bin/socat TCP4-LISTEN:4322,fork SOCKS4A:localhost:palladium.libera.chat:6697,socksport=9050
         '';
         serviceConfig = {
           User = "znc";
