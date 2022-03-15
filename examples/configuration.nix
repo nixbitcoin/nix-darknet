@@ -62,10 +62,6 @@
   # with your username. (I2P)
   # Configure password with nickserv https://wiki.znc.in/Nickserv
   # services.irc-bouncer.irc2p = true;
-  # Enable this option to automatically connect to the anarplex IRC network
-  # with your username. (I2P)
-  # Configure password with nickserv https://wiki.znc.in/Nickserv
-  # services.irc-bouncer.anarplex = true;
 
   ## XD
   # Enable this option to use XD i2p bittorrent client.

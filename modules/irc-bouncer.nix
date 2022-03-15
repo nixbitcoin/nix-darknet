@@ -30,11 +30,6 @@ in {
       default = false;
       description = "Whether to enable irc2p IRC over i2p";
     };
-    anarplex = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether to enable Agora IRC over i2p";
-    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -83,34 +78,6 @@ in {
           destination = "irc.postman.i2p";
           destinationPort = 6667;
           keys = "";
-        };
-      };
-    })
-    (mkIf cfg.anarplex {
-      services.i2p-router.enable = true;
-
-      services.znc.config.User.${cfg.username} = {
-        Network.anarplex = {
-          Server = "127.0.0.1 4321";
-          LoadModule = [ "simple_away" "nickserv" "keepnick" ];
-          Chan = {
-            "#agora" = { };
-          };
-        };
-      };
-
-      # socat tunnel to connect znc to tor
-      # https://wiki.znc.in/Tor
-      systemd.services.anarplex-socat = {
-        bindsTo = [ "znc.service" ];
-        wantedBy = [ "znc.service" ];
-        before = [ "znc.service" ];
-        script = ''
-          ${pkgs.socat}/bin/socat TCP4-LISTEN:4321,fork SOCKS4A:localhost:vxecvd6lc4giwtasjhgbrr3eop6pzq6i5rveracktioneunalgqlwfad.onion:6667,socksport=9050
-        '';
-        serviceConfig = {
-          User = "znc";
-          Group = "znc";
         };
       };
     })
