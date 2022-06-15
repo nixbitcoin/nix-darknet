@@ -3,8 +3,8 @@
 let
   src = pkgs.fetchgit {
     url = "https://cgit.krebsco.de/krops";
-    rev = "804c79a14dc8f81a602d31d5a1eed5f82b3f2457";
-    sha256 = "1k20l7zqprsrm9s38xslr7190vssf4sjdprd9gh146hxlvln2qrf";
+    rev = "89e5e67659bbbf0da53cc2cc5dea644b9a2301f6";
+    sha256 = "0gxx412wqwi65djyp6x8bpkkmi79v3jqcjvk1y1c8qrfpqizyx90";
   };
 in {
   lib = import "${src}/lib";
